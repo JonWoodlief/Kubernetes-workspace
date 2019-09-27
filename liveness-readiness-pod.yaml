@@ -4,15 +4,22 @@ metadata:
     name: liveliness-readiness-pod
 spec:
     containers:
-        - name: liveliness-readiness-pod
+        - name: server
           image: python:2.7-alpine
 
           readinessProbe:
-              initialDelaySeconds: 5
-              failureThreshold: 1
+              initialDelaySeconds: 30
+              failureThreshold: 4
               httpGet:
                   path: /
                   port: 8000
+          
+          livenessProbe:
+              initialDelaySeconds: 60
+              periodSeconds: 5
+              exec:
+                command: ["ls", "index.html"]
+
           env:
               - name: DELAY_START
                 value: "45"
