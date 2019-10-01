@@ -1,0 +1,34 @@
+#kubectl exec pod-with-sidecar -c sidecar-container -it bash
+#apt-get update && apt-get install curl
+#curl 'http://localhost:80/app.txt'
+
+
+kind: Pod
+apiVersion: v1
+metadata:
+    name: pod-with-sidecar
+spec:
+    volumes:
+        - name: shared-logs
+          emptyDir: {}
+
+    containers:
+        - name: app-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c",
+                "while true;
+                do date >> /var/log/app.txt;
+                sleep 5;
+                done"]
+          volumeMounts:
+              - name: shared-logs
+                mountPath: /var/log
+
+        - name: sidecar-container
+          image: nginx
+          ports:
+              - containerPort: 80
+          volumeMounts:
+              - name: shared-logs
+                mountPath: /usr/share/nginx/html
