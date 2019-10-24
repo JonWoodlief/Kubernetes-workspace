@@ -1,0 +1,9 @@
+kind: Pod
+apiVersion: v1
+metadata:
+    name: pod-illegal
+    namespace: red-team
+spec:
+    containers:
+      - name: nginx-illegal
+        image: nginx

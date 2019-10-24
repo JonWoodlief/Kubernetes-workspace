@@ -1,0 +1,23 @@
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+    name: google-check-cronjob
+spec:
+    schedule: "*/1 * * * *"
+    successfulJobsHistoryLimit: 10
+
+    jobTemplate:
+        metadata:
+            name: google-check-job
+        spec:
+            template:
+                metadata:
+                    name: google-check-opod
+                spec:
+                    restartPolicy: OnFailure
+
+                    containers:
+                      - name: google-check-container
+                        image: alpine
+                        command: ["/bin/sh"]
+                        args: ["-c", "ping -w 1 google.com"]
