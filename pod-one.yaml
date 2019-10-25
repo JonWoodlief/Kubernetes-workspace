@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+    name: pod-one
+    namespace: red-team
+spec:
+    containers:
+      - name: nginx-pod-one
+        image: nginx
+        resources:
+            requests:
+                memory: 768m
+                cpu: "0.5"
+            limits:
+                memory: 1024m
+                cpu: "2"
